@@ -1,20 +1,3 @@
-<template>
-  <Container>
-    <div class="flex flex-col justify-center space-y-3 py-10" v-if="!isLoading">
-      <UserInfo :key="$route.params.user" :username="user" :addPost="addpost" :isFollowing="isFollowing" :userInfo="userInformation" />
-      <UserImages :posts="posts" />
-    </div>
-    <div class="card flex justify-center items-center h-screen" v-else>
-      <ProgressSpinner
-        style="width: 50px; height: 50px"
-        strokeWidth="8"
-        fill="transparent"
-        animationDuration=".5s"
-        aria-label="Custom ProgressSpinner" />
-    </div>
-  </Container>
-</template>
-
 <script setup>
 import Container from "@/layout/Container.vue";
 import UserInfo from "./UserInfo.vue";
@@ -91,59 +74,19 @@ onMounted(() => {
 });
 </script>
 
-<!-- 
 <template>
   <Container>
-    <div class="flex flex-col justify-center space-y-3 py-10">
-      <UserInfo :key="$route.params.user" username="mnd" :addPost="addpost" :userInfo="{ potes: 4, followers: 100, folloing: 3000 }" />
+    <div class="flex flex-col justify-center space-y-3 py-10" v-if="!isLoading">
+      <UserInfo :key="$route.params.user" :username="user" :addPost="addpost" :isFollowing="isFollowing" :userInfo="userInformation" />
       <UserImages :posts="posts" />
+    </div>
+    <div class="card flex justify-center items-center h-screen" v-else>
+      <ProgressSpinner
+        style="width: 50px; height: 50px"
+        strokeWidth="8"
+        fill="transparent"
+        animationDuration=".5s"
+        aria-label="Custom ProgressSpinner" />
     </div>
   </Container>
 </template>
-
-<script setup>
-import Container from "@/layout/Container.vue";
-import UserInfo from "./UserInfo.vue";
-import UserImages from "./UserImages.vue";
-import { useRoute } from "vue-router";
-import { supabase } from "@/superbase";
-import { ref, onMounted } from "vue";
-
-const route = useRoute();
-const usernameUrl = route.params.user;
-const posts = ref([]);
-
-const addpost = (mnd) => {
-  posts.value.unshift(mnd);
-};
-
-const fetchProfile = async (username) => {
-  if (!username) {
-    console.log("Profile query skipped: Username is undefined or null.");
-    return null;
-  }
-
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('username', username)
-    .maybeSingle(); // use maybeSingle to avoid 406 when no rows are returned
-
-  if (error) {
-    console.error('Failed to fetch profile:', error);
-    return null;
-  }
-
-  return data;
-};
-
-onMounted(async () => {
-  const profile = await fetchProfile(usernameUrl);
-  if (profile) {
-    // handle the fetched profile (e.g., store in a ref or pass to a child)
-    console.log('Fetched profile', profile);
-  }
-});
-</script>
-
-<style></style> -->
